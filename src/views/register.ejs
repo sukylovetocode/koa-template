@@ -1,0 +1,59 @@
+<%- include('layout/header') %>
+
+<form>
+  <div class="form-group">
+    <input
+      type="text"
+      class="form-control"
+      id="input-username"
+      placeholder="请输入用户名"
+    />
+    <small id="span-username-info" class="form-text text-muted"></small>
+  </div>
+  <div class="form-group">
+    <input
+      type="password"
+      class="form-control"
+      id="input-password"
+      placeholder="请输入密码"
+    />
+  </div>
+  <div class="form-group">
+    <input
+      type="password"
+      class="form-control"
+      id="input-password-repeat"
+      placeholder="重新输入密码"
+    />
+    <small id="span-password-repeat-info" class="form-text text-muted"></small>
+  </div>
+  <button type="submit" class="btn btn-primary" id="btn-submit">注册</button>
+  &nbsp;
+  <a href="/login">已有账号，返回登录>></a>
+</form>
+
+<script>
+  $("#btn-submit").on("click", function (e) {
+    e.preventDefault();
+
+    let pwd = $("#input-password").val();
+    let confirmPwd = $("#input-password-repeat").val();
+    if (pwd === confirmPwd) {
+      $.post(
+        "/api/user/register",
+        {
+          username: $("#input-username").val(),
+          password: pwd,
+        },
+        function (callback) {
+          if (callback.status === 200) {
+            alert("注册成功，请登录");
+            window.location.href = "/login";
+          } else {
+            alert(callback.message);
+          }
+        }
+      );
+    }
+  });
+</script>
